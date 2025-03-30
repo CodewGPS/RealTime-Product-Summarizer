@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 import os
 from bs4 import BeautifulSoup
 import re
+from transformers import AutoModelForCausalLM,AutoTokenizer
+import json
 load_dotenv()
 API_KEY=os.getenv(key="x-rapidapi-key")
 
@@ -44,17 +46,48 @@ def fetch(id):
     }
 
     response = requests.get(url, headers=headers, params=querystring)
+    
+    #data={
+        #'query' : 'What do the users say about this product>?',
+        #'context' :  response
+    #}
+    #json_data=json.dumps(data)
+    #tokenizer=AutoTokenizer.from_pretrained('gpt2')
+    #model=AutoModelForCausalLM.from_pretrained('gpt2')
+    #input=tokenizer(response,return_tensors='pt')
+    #outputs=model.generate(**input)
+    #answer=tokenizer.decode(outputs[0],skip_special_tokens=True)
+
+    #print(answer)
 
     print(response.json())
     json_response=response.json()
+    return json_response
     #print(json_response['highlights'])
-    desc=json_response.get("description")
+    #desc=json_response.get("description")
+   # print(desc)
+
+def query(json_response):
+    brand=json_response['brand']
+    title=json_response['title']
+    mrp=json_response['mrp']
+    price=json_response['price']
+    variants=json_response['variants']
+    desc=json_response['description']
+    qna=json_response['qna']
+    reviews=json_response['reviews']
+
+    print(brand)
+    print(title)
+    print(mrp)
+    print(price)
+    print(variants)
     print(desc)
 
-
 def main():
-    id=get_flipkart_pid("cmf-nothing-phone-1-black-128-gb")
-    fetch(id)
+    id=get_flipkart_pid("Apple iPhone 15")
+    json=fetch(id)
+    query(json)
 
 
 if __name__=='__main__':
