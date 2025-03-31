@@ -63,37 +63,31 @@ def frame_context(json_response):
     """
     return context
 
-def query(context):
-    question=input("What is this product about ?")
 
-    if not question:
-        print("No question entered.Exit.")
-        return
-    
-    answer= ask_llm(question,context)
-    print(answer)
-
-def ask_llm(question,context):
-    genai.configure(api_key=GOOGLE_API_KEY)
-    
-    model=genai.GenerativeModel(model_name= "gemini-2.0-flash")
-    prompt = f"Context:\n{context}\n\nQuestion:\n{question}\n\nAnswer:"
+def ask_llm(context):
     try:
-        response = model.generate_content(prompt)  
+        genai.configure(api_key=GOOGLE_API_KEY)
+        model=genai.GenerativeModel(model_name= "gemini-2.0-flash")
+        chat=model.start_chat(history=[])
+        while True:
+                question=input("You: ")
+                prompt = f"Context:\n{context}\n\nQuestion:\n{question}\n\nAnswer:"
+                if(question.lower()=="exit"):
+                    print("Bot: Goodbye!")
+                    break
+                response = chat.send_message(prompt,stream=True)
+                for chunk in response:
+                    print(chunk.text,end="",flush=True)
 
-        
-        return response.text
-
-    except Exception as e:
-        print(f"Error during Gemini API call: {e}")
+    except:    
         return "Sorry, I encountered an error while processing your request."
 
 
 def main():
-    id=get_flipkart_pid("Samsung Galaxy S24 Ultra")
+    id=get_flipkart_pid("Apple Macbook Air M4")
     json=fetch(id)
     context=frame_context(json)
-    query(context)
+    ask_llm(context)    
 
 
 if __name__=='__main__':
