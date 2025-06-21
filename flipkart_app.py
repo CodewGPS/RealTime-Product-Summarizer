@@ -50,36 +50,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def get_flipkart_pid(product_name):
-    url = "https://real-time-flipkart-api.p.rapidapi.com/product-search"
-    querystring = {"q": product_name, "page": "1", "sort_by": "popularity"}
+    product_name = product_name.lower()
+    query = product_name.replace(' ', '-')
+    url = f"https://m.flipkart.com/search?q={query}"
 
-    headers = {
-        "x-rapidapi-key": API_KEY,
-        "x-rapidapi-host": "real-time-flipkart-api.p.rapidapi.com"
-    }
+   headers = {
+    "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36"
+	}
 
-    with st.spinner("Searching for product..."):
-        response = requests.get(url, headers=headers, params=querystring)
-	   
-        st.code(f"Status code: {response.status_code}")
-        st.code(f"Response: {response.text[:1000]}")
-
+    
+    with st.spinner('Searching for product...'):
+        response = requests.get(url, headers=headers)
         if response.status_code != 200:
             return None, "Failed to retrieve data"
 
-        try:
-            data = response.json()
-            products = data.get("products", [])
-            if not products:
-                return None, "No products found"
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-            pid = products[0].get("pid")
-            if not pid:
-                return None, "PID not found"
+       
+        product_link = soup.find('a', href=re.compile(r'/p/itm'))
+        if product_link:
+            match = re.search(r'pid=([A-Z0-9]+)', product_link['href'])
+            if match:
+                return match.group(1), None 
 
-            return pid, None
-        except Exception as e:
-            return None, f"Error: {str(e)}"
+        return None, "Product not found"
 
 	
 
