@@ -51,28 +51,32 @@ st.markdown("""
 
 def get_flipkart_pid(product_name):
     product_name = product_name.lower()
-    query = product_name.replace(' ', '-')
+    query = product_name.replace(' ', '+')
     url = f"https://m.flipkart.com/search?q={query}"
-	headers = {
-    	"User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36"
-	}
 
-    
-    with st.spinner('Searching for product...'):
-        response = requests.get(url, headers=headers)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36"
+    }
+
+    with st.spinner('🔎 Searching for product...'):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+        except Exception as e:
+            return None, f"Request failed: {str(e)}"
+
         if response.status_code != 200:
-            return None, "Failed to retrieve data"
+            return None, f"Failed to retrieve data (Status: {response.status_code})"
 
         soup = BeautifulSoup(response.text, 'html.parser')
-
-       
         product_link = soup.find('a', href=re.compile(r'/p/itm'))
-        if product_link:
+
+        if product_link and 'href' in product_link.attrs:
             match = re.search(r'pid=([A-Z0-9]+)', product_link['href'])
             if match:
-                return match.group(1), None 
+                return match.group(1), None
 
-        return None, "Product not found"
+        return None, "❌ Product not found or PID missing."
+
 
 	
 
