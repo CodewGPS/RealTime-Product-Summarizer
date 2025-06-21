@@ -71,9 +71,9 @@ def get_flipkart_pid(product_name):
             match = re.search(r'pid=([A-Z0-9]+)', product_link['href'])
             if match:
                 return match.group(1), None 
-
-        return None, "Product not found"
 	st.code(response.text[:1000])  # Log some of the HTML or response
+        return None, "Product not found"
+	
 
 
 def fetch_product_details(pid):
