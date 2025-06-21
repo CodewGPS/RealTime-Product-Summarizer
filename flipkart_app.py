@@ -1,16 +1,13 @@
 import streamlit as st
 import requests
-from dotenv import load_dotenv
-import os
 from bs4 import BeautifulSoup
 import re
 import google.generativeai as genai
 import json
 
 
-load_dotenv()
-API_KEY = os.getenv("x-rapidapi-key")
-GOOGLE_API_KEY = os.getenv("google-api-key")
+API_KEY = st.secrets["x-rapidapi-key"]
+GOOGLE_API_KEY = st.secrets["google-api-key"]
 
 
 st.set_page_config(
