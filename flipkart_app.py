@@ -53,9 +53,8 @@ def get_flipkart_pid(product_name):
     product_name = product_name.lower()
     query = product_name.replace(' ', '-')
     url = f"https://m.flipkart.com/search?q={query}"
-
-   headers = {
-    "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36"
+	headers = {
+    	"User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36"
 	}
 
     
