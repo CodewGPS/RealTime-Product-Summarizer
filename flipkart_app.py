@@ -60,6 +60,9 @@ def get_flipkart_pid(product_name):
 
     with st.spinner("Searching for product..."):
         response = requests.get(url, headers=headers, params=querystring)
+	   
+        st.code(f"Status code: {response.status_code}")
+        st.code(f"Response: {response.text[:1000]}")
 
         if response.status_code != 200:
             return None, "Failed to retrieve data"
