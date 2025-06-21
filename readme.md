@@ -72,7 +72,7 @@ Try asking questions like:
 ### RapidAPI Key
 1. Visit [RapidAPI](https://rapidapi.com/)
 2. Sign up/Login to your account
-3. Subscribe to the "Real Time Flipkart API"
+3. Subscribe to the [Real Time Flipkart API](https://rapidapi.com/opendatapointcom/api/real-time-flipkart-api)
 4. Copy your API key from the dashboard
 
 ### Google Gemini API Key
