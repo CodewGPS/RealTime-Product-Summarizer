@@ -4,7 +4,6 @@
 
 A Streamlit-based web application that lets you search for any product on Flipkart and ask intelligent questions about it using Google's Gemini AI. Simply enter a product name, and the app will fetch detailed product information and provide instant answers to your queries in natural language.
 
-![Flipkart Q&A Genie Demo](https://via.placeholder.com/800x400/4285f4/ffffff?text=Flipkart+Q%26A+Genie+Demo)
 
 ## ✨ Features
 
